@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style type="text/css">
+    body{
+        width: 600px;
+        height: 700px;
+        margin: 0 auto;
+      }
+      .container_form, .modal, .modal2 {
+        display: block;
+        position: relative;
+        width: 86%;
+        height: 650px;
+        padding-top: 0px;
+        margin: 35px 15px;
+        border-radius: 4px;
+        /* background-image: -webkit-gradient(linear, left top, left bottom, from(#30cfd0), to(#330867));
+        background-image: linear-gradient(to bottom, #30cfd0 0%, #330867 100%); */
+        -webkit-box-shadow: 0 0 17px 10px #666;
+        box-shadow: 0 0 17px 10px #666;
+        z-index: 2;
+      }
+
+      .back{
+        display: block;
+        position: absolute;
+        background-color: rgba(0,0,0,0.4);
+        width: 100%;
+        height: 650px;
+        border-radius: 4px;
+        z-index: 3;
+      }
+      .loader {
+        margin: 200px auto;
+        border-top: 16px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      .modal, .modal2{
+        width: 90%;
+        height: 150px;
+        position: absolute;
+        top: 10px;
+        background-color: rgba(255,255,255);
+        display: none;
+        align-items: center;
+        z-index: 5;
+        left: 50%;
+        margin-left: -45%;
+      }
+
+      svg {
+        width: 75px;
+        height: 70px;
+        top: 30%;
+        padding-left: 30px;
+        padding-bottom: 35px;
+        z-index: 5;
+      }
+      .modal_text, .modal2_text{
+        padding-left: 30px;
+        padding-bottom: 35px;
+        padding-right: 20px;
+        z-index: 5;
+      }
+
+      h2 {
+        margin-bottom: 10px;
+        font-size: 20pt;
+        text-align: center
+      }
+      
+      form {
+        margin: 0 auto;
+      }
+      .listSelect{
+        padding: 3px;
+      }
+      
+      .listSelect select, .listSelect input[type=text], .listSelect input[type=date] {
+        display: block;
+        margin: 0 auto;
+        /* background: -webkit-gradient(linear, left top, left bottom, from(#30cfd0), to(#330867));
+        background: linear-gradient(to bottom, #30cfd0 0%, #330867 100%); */
+        /* color: #FFFFFF; */
+        width: 450px;
+        padding: 5px 15px;
+        margin: 10px auto;
+        font-size: 13pt;
+        border: 1px solid  #330867;
+        border-radius: 4px;
+        -webkit-box-shadow: 0 0 13px 2px #000;
+        box-shadow: 0 0 13px 2px #000;
+        height: 22px;
+      }
+      
+      .officialCompany, .internalCompany, .listOurCopmany, .towns, .numbers, .category, .type, .admin, .date, .date1{
+        display: block;
+        margin: 20px auto;
+        color: #000000;
+        width: 450px;
+        padding: 4px;
+        font-size: 13pt;
+        font-weight: bold;
+        text-align: center;
+        height: 25px;
+      }
+
+      .officialCompany, .internalCompany, .towns, .numbers, .category, .type, .admin, .date, .date1{
+        margin-top: 40px;
+      }
+
+
+      .listSelect input[type=text], .listSelect input[type=date] {
+        width: 88%;
+      }
+
+      .group1, .group2, .group3 {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 88%;
+        margin: 0 auto;
+      }
+      .listSelect input[id=numbers], .listSelect input[id=category], .listSelect input[id=type], .listSelect input[id=admin]{
+        width: 79%;
+      }
+
+      .listSelect input[id=mydate]{
+        width: 100%;
+        margin-left: 6px;
+      }
+
+      .date{
+        z-index: 2;
+      }
+
+      .date1{
+        opacity: 0;
+        z-index: 1;
+      }
+      .btnOurCompany{
+        display: flex;
+        flex-direction: row;
+        justify-content:center;
+      }
+
+      #btnOK, #btnReset, #buttonOK, #btnClose, #btnTownsYes, #btnTownsNo, #buttonYES, #buttonNO {
+        position:absolute;
+        bottom:0;
+        cursor: pointer;
+        font-size: 16px;
+        padding: 6px 12px;
+        margin: 20px auto;
+        border: 1px solid  #330867;
+        border-radius: 4px;
+        -webkit-box-shadow: 0 0 13px 2px #000;
+        box-shadow: 0 0 13px 2px #000;
+     }
+     #btnTownsYes, #buttonYES{
+       margin: 20px auto;
+       left: 30%;
+       z-index: 6;
+     }
+
+     #btnTownsNo, #buttonNO {
+      margin: 20px auto;
+      left: 65%;
+      z-index: 6;
+     }
+
+     #buttonOK{
+       left:50%;
+       width: 50px;
+       height: 30px;
+       margin-left: -25px;
+       bottom: -5px;
+       z-index: 6;
+     }
+     #btnOK, #btnReset, #btnClose {
+        width: 100px;
+     }
+
+     #btnOK{
+       opacity: 1;
+       cursor: pointer;
+       left: 10%;
+     }
+     #btnReset{
+       right: 10%;
+     }
+     button:hover {
+       font-weight: bold;
+     }
+   </style>
+  </head>
+  <body>
+   <div id="output"></div>
+   <div class="modal-dialog-title-close"></div>
+   <div class="container_form">
+      <div class="back">
+        <div class="loader"></div>
+      </div>
+      <form id="contactForm">
+        <div class="listSelect">
+          <label class="listOurCopmany">Выберите нашу организацию<input id="listOurCopmany" type="text" list="listOurCopmanydata" placeholder="Выберите значение из списка" onchange="changeInputSelect(value, list, id)" required ></label>
+          <datalist id="listOurCopmanydata">
+          </datalist>
+
+          <div class="group1">
+            <label class="type">Выберите тип клиента<input id="type" type="text" list="typedata" placeholder="Выберите значение из списка" onchange="changeInputSelect(value, list, id)" required ></label>
+            <datalist id="typedata">
+            </datalist>
+            
+            <label class="category">Выберите категорию<input id="category" type="text" list="categorydata" placeholder="Выберите значение из списка" onchange="changeInputSelect(value, list, id)" onfocus="checkType()" required ></label>
+            <datalist id="categorydata">
+            </datalist>
+          </div>
+
+          <label class="officialCompany">Введите юридическое лицо<input id="officialCompany" type="text" list="officialCompanydata" placeholder="Введите своё значение" onchange="changeInput(value, list, id)" onfocus="checkCategory()" required ></label>
+          <datalist id="officialCompanydata">
+          </datalist>
+
+          <label class="internalCompany">Введите внутреннее наименование компании<input id="internalCompany" type="text" list="internalCompanydata" placeholder="Введите своё значение" onchange="changeInput(value, list, id)" onfocus="checkCategory()" required ></label>
+          <datalist id="internalCompanydata">
+          </datalist>
+
+          <div class="group2">
+            <label class="numbers">Введите номер договора<input id="numbers" type="text" list="numbersdata" placeholder="Введите своё значение" onchange="changeInput(value, list, id)" required ></label>
+            <datalist id="numbersdata">
+            </datalist>
+
+            <label class="admin">Выберите администратора<input id="admin" type="text" list="admindata" placeholder="Выберите значение из списка" onchange="changeInputSelect(value, list, id)" required ></label>
+            <datalist id="admindata">
+            </datalist>
+          </div>
+
+          <div class="group3">
+            <label class="date">Выберите дату составления договора<input id="mydate" type="date" required ></label>
+            <label class="date1">Выберите дату<input id = "year" type="text" name="date1"></label>
+          </div>
+
+          <div class="btnOurCompany">
+            <button id="btnOK" type="button"  onclick="Submit()">Записать</button>
+            <button id="btnReset" type="reset">Сбросить</button>
+            <button id="btnClose" type="button" onclick="closeForm()">Отменить</button>
+          </div>
+          <div class="modal"></div>
+          <div class="modal2"></div>
+        </div>  
+      </form>
+    </div>
+  </body>
+  <script>
+    //document.addEventListener('click', function(){
+    //  if (event.target.className == "modal-dialog-title-close"){console.log("good");}
+    //  else {console.log(event.target.className)}
+    // })
+    let problemId;
+    let catID = -1;
+    let svg = "<svg version='1.1' id='Capa_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 455.111 455.111' style='enable-background:new 0 0 455.111 455.111;' xml:space='preserve'><circle style='fill:#E24C4B;' cx='227.556' cy='227.556' r='227.556'/><path style='fill:#D1403F;' d='M455.111,227.556c0,125.156-102.4,227.556-227.556,227.556c-72.533,0-136.533-32.711-177.778-85.333c38.4,31.289,88.178,49.778,142.222,49.778c125.156,0,227.556-102.4,227.556-227.556c0-54.044-18.489-103.822-49.778-142.222C422.4,91.022,455.111,155.022,455.111,227.556z'/><path style='fill:#FFFFFF;' d='M331.378,331.378c-8.533,8.533-22.756,8.533-31.289,0l-72.533-72.533l-72.533,72.533c-8.533,8.533-22.756,8.533-31.289,0c-8.533-8.533-8.533-22.756,0-31.289l72.533-72.533l-72.533-72.533c-8.533-8.533-8.533-22.756,0-31.289c8.533-8.533,22.756-8.533,31.289,0l72.533,72.533l72.533-72.533c8.533-8.533,22.756-8.533,31.289,0c8.533,8.533,8.533,22.756,0,31.289l-72.533,72.533l72.533,72.533C339.911,308.622,339.911,322.844,331.378,331.378z'/><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>";
+    let svg2 = "<svg version='1.0' xmlns='http://www.w3.org/2000/svg'  width='1222.000000pt' height='1280.000000pt' viewBox='0 0 1222.000000 1280.000000' preserveAspectRatio='xMidYMid meet'><metadata>Created by potrace 1.15, written by Peter Selinger 2001-2017</metadata><g transform='translate(0.000000,1280.000000) scale(0.100000,-0.100000)'fill='#4caf50' stroke='none'><path d='M7271 12780 c-79 -21 -133 -55 -155 -98 -8 -16 -18 -93 -25 -187 -80 -1109 -253 -1873 -531 -2343 -141 -238 -279 -387 -585 -630 -340 -271 -528 -471 -629 -670 -15 -30 -72 -165 -128 -300 -300 -738 -565 -1282 -836 -1719 -265 -425 -548 -739 -783 -867 -116 -63 -180 -76 -365 -76 l-164 0 0 -2625 c0 -1444 2 -2625 5 -2625 3 0 62 -11 132 -24 71 -14 251 -48 400 -75 150 -28 393 -73 540 -101 1744 -324 1588 -298 1917 -325 485 -39 1028 -73 1566 -97 369 -16 1398 -16 1650 0 515 34 826 90 1010 182 324 163 742 555 873 818 l42 85 6 336 c4 246 9 345 19 371 29 76 94 154 305 366 236 236 306 319 360 429 80 163 68 256 -85 635 -101 252 -140 380 -140 464 0 103 64 208 270 441 229 260 292 369 276 481 -10 75 -62 184 -179 376 -202 333 -256 458 -243 557 10 73 56 154 182 321 223 295 252 353 240 486 -19 213 -189 556 -409 829 -83 103 -245 260 -322 311 -169 114 -421 159 -1110 195 -242 13 -1334 18 -2050 9 l-410 -5 -24 70 c-48 138 -29 362 53 622 81 256 179 480 450 1021 107 215 214 434 236 488 85 205 148 438 187 698 22 140 25 637 5 761 -73 454 -193 740 -413 978 -296 321 -816 521 -1138 437z'/> <path d='M386 6129 c-123 -29 -263 -139 -324 -255 -66 -127 -62 65 -62 -2674 0 -2181 2 -2493 15 -2549 43 -182 187 -329 370 -377 64 -17 1712 -20 1785 -3 181 42 346 215 380 398 14 74 14 4988 0 5062 -34 183 -199 356 -380 398 -57 13 -1728 13 -1784 0z'/> </g> </svg>" 
+    //let svg3 = "<svg xmlns='http://www.w3.org/2000/svg' xml:space='preserve' width='100%' height='100%' version='1.1' style='shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd'viewBox='0 0 500 500'  xmlns:xlink='http://www.w3.org/1999/xlink'>  <defs> <style type='text/css'> <![CDATA[.str0 {stroke:#0062A4;stroke-width:7.5} .fil3 {fill:none} .fil2 {fill:url(#id0)}.fil5 {fill:url(#id1)}.fil4 {fill:url(#id2)}.fil0 {fill:url(#id3)}.fil1 {fill:url(#id4)}]]> </style><linearGradient id='id0' gradientUnits='userSpaceOnUse' x1='247.54' y1='43.425' x2='247.54' y2='167.097'><stop offset='0' style='stop-color:#5DBEFF'/><stop offset='1' style='stop-color:#0099FF'/></linearGradient><linearGradient id='id1' gradientUnits='userSpaceOnUse' x1='205.14' y1='144.214' x2='295.016' y2='355.784'><stop offset='0' style='stop-color:#F2F2F2'/><stop offset='1' style='stop-color:#CBCBCB'/>  </linearGradient><linearGradient id='id2' gradientUnits='userSpaceOnUse' x1='193.355' y1='174.522' x2='306.213' y2='325.476'><stop offset='0' style='stop-color:#A4A4A4'/><stop offset='1' style='stop-color:#F2F2F2'/></linearGradient><radialGradient id='id3' gradientUnits='objectBoundingBox' cx='65.0001%' cy='66.0001%' r='50%' fx='65.0001%' fy='66.0001%'><stop offset='0' style='stop-color:#2EACFF'/><stop offset='1' style='stop-color:#006DB6'/></radialGradient><radialGradient id='id4' gradientUnits='objectBoundingBox' cx='50%' cy='41.9999%' r='43.0001%' fx='50%' fy='41.9999%'><stop offset='0' style='stop-color:#2EACFF'/><stop offset='1' style='stop-color:#008EED'/></radialGradient></defs><g id='Layer_x0020_1'><metadata id='CorelCorpID_0Corel-Layer'/><circle class='fil0' cx='250' cy='250' r='230'/><path class='fil1' d='M250 20c91,0 169,52 206,128 -53,52 -126,83 -206,83 -80,0 -153,-31 -206,-83 37,-76 115,-128 206,-128z'/><path class='fil2' d='M344 57c46,35 41,88 -11,118 -52,31 -131,27 -177,-7 -46,-35 -41,-88 11,-118 52,-31 131,-27 177,7z'/><circle class='fil3 str0' cx='250' cy='250' r='230'/><path class='fil4' d='M204 321c0,-20 3,-36 11,-46 7,-10 20,-22 39,-35 10,-7 18,-14 23,-23 6,-9 9,-20 9,-32 0,-12 -4,-22 -10,-29 -7,-8 -16,-11 -28,-11 -10,0 -18,3 -25,9 -7,6 -10,15 -10,27l-73 0 0 -2c-1,-30 9,-53 29,-69 20,-15 46,-23 79,-23 35,0 62,9 82,27 20,17 30,41 30,71 0,19 -5,35 -16,51 -11,15 -25,27 -42,36 -9,6 -16,13 -19,20 -3,7 -5,17 -5,29l-74 0zm74 92l-74 0 0 -60 74 0 0 60z'/><path class='fil5' d='M214 311l55 0c1,-14 4,-26 14,-36 11,-12 23,-15 36,-26 18,-16 31,-38 31,-64 0,-14 -2,-26 -6,-36 -10,-23 -30,-38 -52,-45 -13,-5 -28,-7 -44,-7 -26,0 -52,5 -73,21 -17,13 -24,32 -25,53l54 0c1,-10 5,-18 12,-25 14,-12 35,-14 51,-8 20,8 29,27 29,47 0,27 -14,49 -36,63 -12,8 -29,20 -37,33 0,0 -8,20 -9,30zm0 92l54 0 0 -40 -54 0 0 40z'/></g></svg>";
+    let svg3 = "<svg xmlns='http://www.w3.org/2000/svg' xml:space='preserve' width='100%' height='100%' version='1.1' style='shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd' viewBox='0 0 500 500' xmlns:xlink='http://www.w3.org/1999/xlink'><defs><style type='text/css'><![CDATA[.str0 {stroke:#303030;stroke-width:10}.fil0 {fill:url(#id0)}.fil1 {fill:url(#id1)}]]></style><linearGradient id='id0' gradientUnits='userSpaceOnUse' x1='250' y1='30' x2='250' y2='470'><stop offset='0' style='stop-color:#17A2FF'/><stop offset='1' style='stop-color:#0083DB'/></linearGradient><linearGradient id='id1' gradientUnits='userSpaceOnUse' x1='137.852' y1='138.07' x2='361.712' y2='361.93'><stop offset='0' style='stop-color:#D8D8D8'/><stop offset='1' style='stop-color:#F2F2F2'/></linearGradient></defs><g id='Layer_x0020_1'><metadata id='CorelCorpID_0Corel-Layer'/><circle class='fil0 str0' cx='250' cy='250' r='220'/><path class='fil1 str0' d='M204 321c0,-20 3,-36 11,-46 7,-10 20,-22 39,-35 10,-7 18,-14 23,-23 6,-9 9,-20 9,-32 0,-12 -4,-22 -10,-29 -7,-8 -16,-11 -28,-11 -10,0 -18,3 -25,9 -7,6 -10,15 -10,27l-73 0 0 -2c-1,-30 9,-53 29,-69 20,-15 46,-23 79,-23 35,0 62,9 82,27 20,17 30,41 30,71 0,19 -5,35 -16,51 -11,15 -25,27 -42,36 -9,6 -16,13 -19,20 -3,7 -5,17 -5,29l-74 0zm74 92l-74 0 0 -60 74 0 0 60z'/></g></svg>";
+    window.onload = function(){ 
+        google.script.run.withSuccessHandler(onSuccess).withFailureHandler(Fail)
+          .getData(1, 'Тех. данные', 'listOurCopmanydata', 2, 'listOurCopmany');
+        
+        google.script.run.withSuccessHandler(onSuccess).withFailureHandler(Fail)
+          .getData(1, 'Тех. данные', 'categorydata', 1, 'category');
+        
+        google.script.run.withSuccessHandler(onSuccess).withFailureHandler(Fail)
+          .getData(1, 'Тех. данные', 'typedata', 5, 'type');
+        
+        google.script.run.withSuccessHandler(onSuccess).withFailureHandler(Fail)
+          .getData(1, 'Реестр договоров', 'numbersdata', 5, 'numbers');
+          
+        google.script.run.withSuccessHandler(onSuccess).withFailureHandler(Fail)
+          .getData(1, 'Тех. данные', 'admindata', 6, 'admin');
+          
+        google.script.run.withSuccessHandler(onSuccess).withFailureHandler(Fail)
+          .getData(1, 'Тех. данные', '', 4, 'mydate');
+        
+        google.script.run.withSuccessHandler(onSuccess).withFailureHandler(Fail)
+          .getData(1, 'Тех. данные', '', 3, 'year');
+        
+        google.script.run.withSuccessHandler(onSuccess).withFailureHandler(Fail)
+            .getUsers(4);
+      }    
+      
+    function Fail(e){alert(e)}
+    function onSuccess(data){// alert(data[0])
+      if (data[0] == 1){
+        document.getElementById(data[4]).name = data[3]; 
+        if (data[4] == 'mydate') return true;
+        let ourComp = data[1];
+        let ourCompList = document.getElementById(data[2]);
+        ourComp.forEach((item) => {
+          let option = document.createElement('option');
+          option.value = item;
+          ourCompList.appendChild(option);
+        });
+      }
+      if (data[0] == 4){
+        document.getElementById('admin').value = data[1];
+        document.querySelector('.back').style.display="none";
+        }
+      if (data[0] == 2){
+        document.getElementById(data[4]).name = data[3];
+        if (data[4] == 'mydate') return true;
+        let ourComp = data[1];
+        let ourCompList = document.getElementById(data[2]);
+        ourComp.forEach((item) => {
+          let option = document.createElement('option');
+          option.value = item;
+          ourCompList.appendChild(option);
+        });
+        document.querySelector('.back').style.display="none";
+      }
+      if (data[0] == 3){
+        if (data[1] == true){
+          let modal = document.querySelector('.modal');
+          modal.innerHTML = svg2+"<div class='modal_text'>Компания <b>"+data[2]+"</b> записана!</div><button id='buttonOK' onClick='requestTown()'>OK</button>";
+          modal.style.display="flex";
+          document.getElementById('buttonOK').focus(); 
+          document.getElementById('category').removeAttribute('disabled');
+        }
+      }
+      if (data[0] == 5){
+        if (data[1] == true){
+          google.script.run.withSuccessHandler(onSuccess).WriteData(3, data[2], catID);
+          google.script.run.withSuccessHandler(onSuccess).SendMail(1, "G.Script.RC: Добавлен новый клиент в реестр договоров", data[2]);
+        } else {
+          let modal = document.querySelector('.modal');
+          modal.innerHTML = svg+"<div class='modal_text'>Google отказал в записи! Попробуйте внести изменения заново!</div><button id='buttonOK' onClick='closeModal()'>OK</button>";
+          modal.style.display="flex";
+          document.querySelector('.back').style.display="block";
+          document.getElementById('buttonOK').focus(); 
+        }
+      }
+      
+      if (data[0] == 6){
+        if (data[1] == true){
+          google.script.host.close();
+        }
+      }
+    }
+    function getCompanyData(value){
+      google.script.run.withSuccessHandler(onSuccess)
+        .getDataCompany(2, 'Реестр договоров', 'officialCompanydata', 2, 'officialCompany', value);
+        
+      google.script.run.withSuccessHandler(onSuccess)
+        .getDataCompany(2, 'Реестр договоров', 'internalCompanydata', 3, 'internalCompany', value);
+    } 
+    
+    function getProviderData(value){
+      google.script.run.withSuccessHandler(onSuccess)
+        .getProviderData(2, 'Реестр договоров', 'officialCompanydata', 2, 'officialCompany', value);
+        
+      google.script.run.withSuccessHandler(onSuccess)
+        .getProviderData(2, 'Реестр договоров', 'internalCompanydata', 4, 'internalCompany', value);
+    }
+    
+    function clearCompanies(){
+      let clr = document.getElementById('officialCompanydata');officialCompany
+      while (clr.options.length != 0){
+        clr.options[0].remove();}
+      document.getElementById('officialCompany').value = '';
+      clr = document.getElementById('internalCompanydata');
+      while (clr.options.length != 0){
+        clr.options[0].remove();} 
+      document.getElementById('internalCompany').value = '';
+    }
+    function changeInputSelect(value, list, id){
+      if (value == "") return true;
+      for (let prop in list.options){
+        if (list.options[prop].value == value )
+          {if (id == "type" && value == "Поставщик"){
+             document.querySelector('.back').style.display="block";
+             clearCompanies();
+             document.getElementById('category').setAttribute('disabled', 'true');
+             document.getElementById('category').value = '';
+             getProviderData(value);}
+           if (id == "type" && value != "Поставщик"){
+             clearCompanies();
+             document.getElementById('category').removeAttribute('disabled');
+             document.getElementById('category').value = '';}
+           if (id == "category"){catID = prop;
+             document.querySelector('.back').style.display="block";
+             clearCompanies();
+             getCompanyData(value);}
+          return(true);}
+      };
+      let inputValue = document.getElementById(id);
+      problemId = id; 
+      inputValue.value = "";
+      let message1 = "Такого значения ";
+      let message2 = " нет в списке. Пожалуйста, выберите значение из списка.";
+      let modal = document.querySelector('.modal');
+      modal.innerHTML = svg+"<div class='modal_text'>"+message1+"<b>"+value+"</b>"+message2+"</div><button id='buttonOK' onClick='closeModal()'>OK</button>";
+      modal.style.display="flex";
+      document.querySelector('.back').style.display="block";
+      document.getElementById('buttonOK').focus(); 
+    }
+    
+    function toUpper(value) {
+      if (!value) return value;
+      return value[0].toUpperCase() + value.slice(1);
+    }
+    
+    function changeInput(value, list, id){
+      //if (id == "numbers"){
+      //  value = value.replace(/\s+/g, ' ').trim();
+      //  document.getElementById(id).value = value; 
+      //  for (let prop in list.options){
+      //    if (list.options[prop].value == value){
+      //      let inputValue = document.getElementById(id);
+      //      problemId = id; 
+      //      inputValue.value = "";
+      //      let message1 = "Значение ";
+      //      let message2 = " уже присутствует в списке. Пожалуйста, введите свое значение или отмените ввод.";
+      //      let modal = document.querySelector('.modal');
+      //      modal.innerHTML = svg+"<div class='modal_text'>"+message1+"<b>"+value+"</b>"+message2+"</div><button id='buttonOK' onClick='closeModal()'>OK</button>";
+      //      modal.style.display="flex";
+      //      document.querySelector('.back').style.display="block";
+      //      document.getElementById('buttonOK').focus();   
+      //      return true;
+      //    }
+      //  }
+      //}
+      if ((id == "officialCompany") || (id == "internalCompany") || (id == "numbers")){
+        for (let prop in list.options){
+          if (list.options[prop].value == value){
+            let inputValue = document.getElementById(id);
+            problemId = id; 
+            let message1 = "Значение ";
+            let message2 = " уже присутствует в списке. Вы согласны с введенным значением?";
+            let modal2 = document.querySelector('.modal2');
+            modal2.innerHTML = svg3+"<div class='modal2_text'>"+message1+"<b>"+value+"</b>"+message2+"</div><button id='buttonYES' onClick='YesModal()'>ДА</button><button id='buttonNO' onClick='CloseModal2()'>НЕТ</button>";
+            modal2.style.display="flex";
+            document.querySelector('.back').style.display="block";
+            document.getElementById('buttonOK').focus();  
+            return true;
+          }
+        }
+      }
+      if ((id == "officialCompany") || (id == "internalCompany")){
+        value = value.replace(/\s+/g, ' ').trim();
+        value = value.replace(/"\s/, '"');
+        value = value.replace(/\s\"+/g, '"');
+        value = value.replace(/\"/, ' "');
+        value = value.replace(/\-\s/, '-');
+        value = value.replace(/\s\-/, '-');
+        value = value.replace(/\-[а-яa-z]/g, match => match.toUpperCase())
+        value = value.replace(/\"[а-яa-z]/g, match => match.toUpperCase())
+        value = toUpper(value);
+        if (id == "officialCompany"){
+          if (value.search("ооо")<=3){value = value.replace("ооо","ООО");}
+          if (value.search("Ооо")<=3){value = value.replace("Ооо","ООО");}
+          if (value.search("зао")<=3){value = value.replace("зао","ЗАО");}
+          if (value.search("Зао")<=3){value = value.replace("Зао","ЗАО");}
+          if (value.search("ноу")<=3){value = value.replace("ноу","НОУ");}
+          if (value.search("Ноу")<=3){value = value.replace("Ноу","НОУ");}
+          if (value.search("ао")<=2) {value = value.replace("ао","АО");}
+          if (value.search("Ао")<=2) {value = value.replace("Ао","АО");}
+          if (value.search("ип")<=2) {value = value.replace("ип","ИП");}
+          if (value.search("Ип")<=2) {value = value.replace("Ип","ИП");}
+          if (value.search("оао")<=3){value = value.replace("оао","ОАО");}
+          if (value.search("Оао")<=3){value = value.replace("Оао","ОАО");}
+          if (value.search("пао")<=3){value = value.replace("пао","ПАО");}
+          if (value.search("Пао")<=3){value = value.replace("Пао","ПАО");}
+          if (value.search("тоо")<=3){value = value.replace("тоо","ТОО");}
+          if (value.search("Тоо")<=3){value = value.replace("Тоо","ТОО");}
+          if (value.search("чоу")<=3){value = value.replace("чоу","ЧОУ");}
+          if (value.search("Чоу")<=3){value = value.replace("Чоу","ЧОУ");}
+          if (value.search("чпоу")<=3){value = value.replace("чпоу","ЧПОУ");}
+          if (value.search("Чпоу")<=3){value = value.replace("Чпоу","ЧПОУ");}
+          if (value.search("гбпоу")<=3){value = value.replace("гбпоу","ГБПОУ");}
+          if (value.search("Гбпоу")<=3){value = value.replace("Гбпоу","ГБПОУ");}
+          document.getElementById(id).value = value;
+        
+        }
+        if (id == "internalCompany"){
+          if (value.search("ип")<=2) {value = value.replace("ип","ИП");}
+          if (value.search("Ип")<=2) {value = value.replace("Ип","ИП");}
+          document.getElementById(id).value = value;
+        }
+        for (let prop in list.options){
+          if (list.options[prop].value == value){
+            let inputValue = document.getElementById(id);
+            problemId = id; 
+            let message1 = "Значение ";
+            let message2 = " уже присутствует в списке. Вы согласны с введенным значением?";
+            let modal2 = document.querySelector('.modal2');
+            modal2.innerHTML = svg3+"<div class='modal2_text'>"+message1+"<b>"+value+"</b>"+message2+"</div><button id='buttonYES' onClick='YesModal()'>ДА</button><button id='buttonNO' onClick='CloseModal2()'>НЕТ</button>";
+            modal2.style.display="flex";
+            document.querySelector('.back').style.display="block";
+            document.getElementById('buttonOK').focus();  
+            return true;
+          }
+        }
+      }
+    }
+    
+    function checkType(){
+      let typeCl = document.getElementById("type");
+      if (typeCl.value == ''){
+        let modal = document.querySelector('.modal');
+        problemId = "type"; 
+        modal.innerHTML = svg+"<div class='modal_text'>Выберите сначала тип клиента!</div><button id='buttonOK' onClick='closeModal()'>OK</button>";
+        modal.style.display="flex";
+        document.querySelector('.back').style.display="block";
+        document.getElementById('buttonOK').focus(); 
+      }
+    }
+    
+    function checkCategory(){
+      let category = document.getElementById("category");
+      let typeCl = document.getElementById("type");
+      if (category.value == '' && typeCl.value == 'Клиент'){
+        problemId = "category";
+        let modal = document.querySelector('.modal');
+        modal.innerHTML = svg+"<div class='modal_text'>Выберите сначала категорию клиента!</div><button id='buttonOK' onClick='closeModal()'>OK</button>";
+        modal.style.display="flex";
+        document.querySelector('.back').style.display="block";
+        document.getElementById('buttonOK').focus();  
+      }
+      if (category.value == '' && typeCl.value == ''){
+        problemId = "type"; 
+        let modal = document.querySelector('.modal');
+        modal.innerHTML = svg+"<div class='modal_text'>Выберите сначала тип клиента!</div><button id='buttonOK' onClick='closeModal()'>OK</button>";
+        modal.style.display="flex";
+        document.querySelector('.back').style.display="block";
+        document.getElementById('buttonOK').focus(); 
+      }
+    }
+    
+    function CloseModal2(){
+      document.querySelector('.modal2').style.display="none";
+      document.querySelector('.back').style.display="none";
+      document.getElementById(problemId).value = '';
+      document.getElementById(problemId).focus();  
+    }
+    
+    function closeModal(){
+      document.querySelector('.modal').style.display="none";
+      document.querySelector('.back').style.display="none"; 
+      document.getElementById(problemId).focus();  
+    }
+    
+    function YesModal(){
+      document.querySelector('.modal2').style.display="none";
+      document.querySelector('.back').style.display="none"; 
+      document.getElementById(problemId).focus();  
+    }
+    
+    function requestTown(){
+      document.querySelector('.modal').style.display="none";
+      let modal = document.querySelector('.modal');
+      modal.innerHTML = svg3+"<div class='modal_text'>Вы будете вносить изменения в список городов?</div><button id='btnTownsYes' onClick='goTown()'>Да</button><button id='btnTownsNo' onClick='closeForm()'>Нет</button>";
+      modal.style.display="flex";
+      document.getElementById('btnTownsYes').focus(); 
+    }
+    
+    function goTown(){
+      google.script.run.withSuccessHandler(onSuccess)
+          .newTowns();
+      google.script.run.withSuccessHandler(onSuccess).Protect(6);
+      google.script.host.close();
+    }
+    
+    function closeForm(){
+      document.querySelector('.back').style.display="block";
+      document.querySelector('.modal').style.display="none";
+      google.script.run.withSuccessHandler(onSuccess).Protect(6);
+    }
+    
+    let today = new Date();
+    let dd = today.getDate();
+    let mm = today.getMonth()+1; //January is 0!
+    let yyyy = today.getFullYear();
+
+    if(dd<10){
+        dd='0'+dd;
+    } 
+    if(mm<10){
+        mm='0'+mm;
+    } 
+    today = yyyy+'-'+mm+'-'+dd;                
+    document.getElementById("mydate").defaultValue =today+"";
+
+
+    let form = document.getElementById('contactForm'); 
+    let data = {
+        label : [],
+        value : [],
+    };
+    
+    let myDate = document.getElementById('mydate').value;
+    document.getElementById('year').value = myDate.split('-')[0];
+    
+    document.addEventListener('submit', function(){
+      event.preventDefault();
+    });
+    document.addEventListener('reset', function(){
+      document.getElementById('category').removeAttribute('disabled');
+    });
+    function Submit() {
+      let good = true;
+      [...form.elements].forEach((input, i) => {
+        if(input.type == 'text' || input.type == 'date'){
+           if ((input.value != '' && good == true) || (input.value == '' && input.id == 'category' && document.getElementById('type').value == "Поставщик" && input.id != undefined)){
+               data.label[i] = input.name;
+               data.value[i] = input.value.trim();
+           } else {
+              if (good == true){
+                  good = false; 
+                  problemId = document.getElementById(input.id);
+                  let modal = document.querySelector('.modal');
+                  modal.innerHTML = svg+"<div class='modal_text'>Пожалуйста, "+input.labels[0].textContent+"!</div><button id='buttonOK' onClick='closeModal()'>OK</button>";
+                  modal.style.display="flex";
+                  document.querySelector('.back').style.display="block"; 
+              }
+           }
+         }
+      });
+
+      if (good == true){
+        document.querySelector('.back').style.display="block"; 
+        //alert(data);
+        google.script.run.withSuccessHandler(onSuccess).noProtect(5, data);
+      }
+    };
+ 
+  </script>
+  
+</html>
+
+
+

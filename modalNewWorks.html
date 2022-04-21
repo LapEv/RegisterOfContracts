@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style type="text/css">
+      body{
+        width: 600px;
+        height: 400px;
+        margin: 0 auto;
+      }
+      .container_form, .modal {
+        display: block;
+        position: relative;
+        width: 86%;
+        height: 100%;
+        padding-top: 0px;
+        margin: 35px 15px;
+        border-radius: 4px;
+        /* background-image: -webkit-gradient(linear, left top, left bottom, from(#30cfd0), to(#330867));
+        background-image: linear-gradient(to bottom, #30cfd0 0%, #330867 100%); */
+        -webkit-box-shadow: 0 0 17px 10px #666;
+        box-shadow: 0 0 17px 10px #666;
+        z-index: 2;
+      }
+
+      .back{
+        display: block;
+        position: absolute;
+        background-color: rgba(0,0,0,0.4);
+        width: 100%;
+        height: 100%;
+        border-radius: 4px;
+        z-index: 3;
+      }
+      .loader {
+        margin: 0 auto;
+        margin-top: 25%;
+        border-top: 16px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      .modal{
+        width: 90%;
+        height: 150px;
+        position: absolute;
+        top: 10px;
+        background-color: rgba(255,255,255);
+        display: none;
+        align-items: center;
+        z-index: 5;
+        left: 50%;
+        margin-left: -45%;
+      }
+
+      svg {
+        width: 75px;
+        height: 70px;
+        top: 30%;
+        padding-left: 30px;
+        padding-bottom: 35px;
+        z-index: 5;
+      }
+      .modal_text{
+        padding-left: 30px;
+        padding-right: 20px;
+        padding-bottom: 35px;
+        z-index: 5;
+      }
+
+      h2 {
+        margin-bottom: 10px;
+        font-size: 20pt;
+        text-align: center
+      }
+      
+      form {
+        margin: 0 auto;
+      }
+      .listSelect{
+        padding: 3px;
+      }
+      
+      .listSelect select, .listSelect input[type=text] {
+        display: block;
+        margin: 0 auto;
+        /* background: -webkit-gradient(linear, left top, left bottom, from(#30cfd0), to(#330867));
+        background: linear-gradient(to bottom, #30cfd0 0%, #330867 100%); */
+        /* color: #FFFFFF; */
+        width: 450px;
+        padding: 5px 15px;
+        margin: 10px auto;
+        font-size: 13pt;
+        border: 1px solid  #330867;
+        border-radius: 4px;
+        -webkit-box-shadow: 0 0 13px 2px #000;
+        box-shadow: 0 0 13px 2px #000;
+        height: 22px;
+      }
+      
+      .listWorks{
+        display: block;
+        margin: 20px auto;
+        color: #000000;
+        width: 450px;
+        padding: 4px;
+        font-size: 14pt;
+        font-weight: bold;
+        text-align: center;
+        height: 25px;
+      }
+
+      .listWorksdata{
+        margin-top: 40px;
+      }
+
+
+      .listSelect input[type=text]{
+        width: 88%;
+      }
+      #checklist{
+        display: block;
+        margin: 0 auto;
+        /* background: -webkit-gradient(linear, left top, left bottom, from(#30cfd0), to(#330867));
+        background: linear-gradient(to bottom, #30cfd0 0%, #330867 100%); */
+        /* color: #FFFFFF; */
+        width: 400px;
+        height: 65%;
+        padding: 5px 15px;
+        margin: 35px auto;
+        font-size: 13pt;
+        border: 1px solid  #330867;
+        border-radius: 4px;
+        -webkit-box-shadow: 0 0 13px 2px #000;
+        box-shadow: 0 0 13px 2px #000;
+      }
+      #container{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      #form{
+        width:50%;
+        margin: 8px auto;
+      }
+
+      label{
+        padding-left: 10px;
+      }
+      
+      input[type="checkbox"]{
+        -webkit-box-shadow: 0 0 13px 2px #000;
+        box-shadow: 0 0 11px 2px #000;
+        cursor: pointer;
+      }
+
+      .btnOurCompany{
+        display: flex;
+        flex-direction: row;
+        justify-content:center;
+      }
+
+      #btnOK, #btnReset, #buttonOK, #btnClose, #buttonClose {
+        bottom:0;
+        cursor: pointer;
+        font-size: 16px;
+        padding: 6px 12px;
+        margin: 20px auto;
+        border: 1px solid  #330867;
+        border-radius: 4px;
+        -webkit-box-shadow: 0 0 13px 2px #000;
+        box-shadow: 0 0 13px 2px #000;
+     }
+
+     #btnWrite {
+      display: block;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 6px 12px;
+      margin: 10px auto;
+      border: 1px solid  #330867;
+      border-radius: 4px;
+      -webkit-box-shadow: 0 0 13px 2px #000;
+      box-shadow: 0 0 13px 2px #000;
+     }
+
+     #btnWrite:disabled{
+      cursor: default;
+     }
+     #buttonOK, #buttonClose{
+       position: absolute;
+       bottom: 0;
+       left:50%;
+       width: 50px;
+       height: 30px;
+       margin-left: -25px;
+       bottom: -5px;
+       z-index: 6;
+     }
+     #btnOK, #btnReset, #btnClose {
+        width: 100px;
+     }
+
+     #btnOK{
+       opacity: 1;
+       cursor: pointer;
+       left: 10%;
+     }
+     #btnReset{
+       right: 10%;
+     }
+     button:hover {
+       font-weight: bold;
+     }
+   </style>
+  </head>
+  <body>
+    <div id="output"></div>
+    <div class="container_form">
+        <div class="back">
+          <div class="loader"></div>
+        </div>
+        <form id="contactForm">
+          <div class="listSelect">
+            <label class="listWorks">Выберите вид работ из списка или введите новый<input id="listWorks" type="text" list="listWorksdata" placeholder="Вид работ" onchange="changeInput(value, id)" required ></label>
+            <datalist id="listWorksdata">
+            </datalist>
+          </div>
+          <div id="checklist">
+            <div id="container"></div>
+            <button id="btnWrite" type="button" disabled>Записать</button>
+            <div class="btnOurCompany">
+              <button id="btnClose" type="button" onclick="closeForm()">Закрыть</button>
+              <button id="btnReset" type="reset">Сбросить</button>
+            </div>
+          </div> 
+          <div class="modal"></div> 
+        </form>
+      </div>
+   </body>
+  <script>
+    let svg = "<svg version='1.1' id='Capa_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 455.111 455.111' style='enable-background:new 0 0 455.111 455.111;' xml:space='preserve'><circle style='fill:#E24C4B;' cx='227.556' cy='227.556' r='227.556'/><path style='fill:#D1403F;' d='M455.111,227.556c0,125.156-102.4,227.556-227.556,227.556c-72.533,0-136.533-32.711-177.778-85.333c38.4,31.289,88.178,49.778,142.222,49.778c125.156,0,227.556-102.4,227.556-227.556c0-54.044-18.489-103.822-49.778-142.222C422.4,91.022,455.111,155.022,455.111,227.556z'/><path style='fill:#FFFFFF;' d='M331.378,331.378c-8.533,8.533-22.756,8.533-31.289,0l-72.533-72.533l-72.533,72.533c-8.533,8.533-22.756,8.533-31.289,0c-8.533-8.533-8.533-22.756,0-31.289l72.533-72.533l-72.533-72.533c-8.533-8.533-8.533-22.756,0-31.289c8.533-8.533,22.756-8.533,31.289,0l72.533,72.533l72.533-72.533c8.533-8.533,22.756-8.533,31.289,0c8.533,8.533,8.533,22.756,0,31.289l-72.533,72.533l72.533,72.533C339.911,308.622,339.911,322.844,331.378,331.378z'/><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>";
+    let svg2 = "<svg version='1.0' xmlns='http://www.w3.org/2000/svg'  width='1222.000000pt' height='1280.000000pt' viewBox='0 0 1222.000000 1280.000000' preserveAspectRatio='xMidYMid meet'><metadata>Created by potrace 1.15, written by Peter Selinger 2001-2017</metadata><g transform='translate(0.000000,1280.000000) scale(0.100000,-0.100000)'fill='#4caf50' stroke='none'><path d='M7271 12780 c-79 -21 -133 -55 -155 -98 -8 -16 -18 -93 -25 -187 -80 -1109 -253 -1873 -531 -2343 -141 -238 -279 -387 -585 -630 -340 -271 -528 -471 -629 -670 -15 -30 -72 -165 -128 -300 -300 -738 -565 -1282 -836 -1719 -265 -425 -548 -739 -783 -867 -116 -63 -180 -76 -365 -76 l-164 0 0 -2625 c0 -1444 2 -2625 5 -2625 3 0 62 -11 132 -24 71 -14 251 -48 400 -75 150 -28 393 -73 540 -101 1744 -324 1588 -298 1917 -325 485 -39 1028 -73 1566 -97 369 -16 1398 -16 1650 0 515 34 826 90 1010 182 324 163 742 555 873 818 l42 85 6 336 c4 246 9 345 19 371 29 76 94 154 305 366 236 236 306 319 360 429 80 163 68 256 -85 635 -101 252 -140 380 -140 464 0 103 64 208 270 441 229 260 292 369 276 481 -10 75 -62 184 -179 376 -202 333 -256 458 -243 557 10 73 56 154 182 321 223 295 252 353 240 486 -19 213 -189 556 -409 829 -83 103 -245 260 -322 311 -169 114 -421 159 -1110 195 -242 13 -1334 18 -2050 9 l-410 -5 -24 70 c-48 138 -29 362 53 622 81 256 179 480 450 1021 107 215 214 434 236 488 85 205 148 438 187 698 22 140 25 637 5 761 -73 454 -193 740 -413 978 -296 321 -816 521 -1138 437z'/> <path d='M386 6129 c-123 -29 -263 -139 -324 -255 -66 -127 -62 65 -62 -2674 0 -2181 2 -2493 15 -2549 43 -182 187 -329 370 -377 64 -17 1712 -20 1785 -3 181 42 346 215 380 398 14 74 14 4988 0 5062 -34 183 -199 356 -380 398 -57 13 -1728 13 -1784 0z'/> </g> </svg>" 
+    let list, chkbox, workData = [];
+    let newCHK = [];
+    let target;
+    let message;
+    let form = document.getElementById('contactForm'); 
+    let loadData = [];
+    let catData = {
+        label : [],
+        value : [],
+    }; 
+    function onSuccess(data) {
+     if (data[0] == 1){ 
+        loadData = data;
+        //----
+        if (data[4] == 'listWorks'){
+          document.getElementById(data[4]).name = data[3]; 
+          let works = data[1][0];
+          let worksList = document.getElementById(data[2]);
+          works.forEach((item) => {
+            let option = document.createElement('option');
+            option.value = item;
+            worksList.appendChild(option);
+          });
+        }
+
+        list = data[5];
+        catData.label = list;
+        for (var i = 0; i < list.length; i++) {
+          var container = document.getElementById("container");
+          var formGroup = document.createElement("div");
+          var input = document.createElement("input");
+          var label = document.createElement("label");
+        
+          formGroup.appendChild(input);
+          formGroup.appendChild(label);
+          container.appendChild(formGroup);
+          formGroup.id = 'form';
+          input.type = "checkbox"
+          input.id = 'category';
+          input.name = list[i];
+          label.setAttribute("for", list[i]);
+          label.innerText = list[i];
+        }
+        showLoad(false);
+        //google.script.run.withSuccessHandler(onSuccess).noProtect();
+      }
+      if (data[0] == 2){
+         if (data[1] == true){
+           let message3 = "";
+           for (var prop in catData.label){
+             if (catData.value[prop] == true){
+               if (message3 == "" ){message3 = catData.label[prop];} 
+               else {message3 = message3 + ", "+catData.label[prop];}
+             }
+           }
+           if (data[2] == true){
+            loadData[1][0].push(data[4][0]);
+            loadData[1][1].push(data[4][1][0]);
+            loadData[1][2].push(data[4][1][1]);
+            loadData[1][3].push(data[4][1][2]);
+            let worksList = document.getElementById('listWorksdata');
+            worksList.append(new Option())
+            worksList.options[worksList.options.length-1].value = data[4][0];
+            message4 = " добавлен!";
+           }
+           if (data[2] == false){//alert(data[3]); alert(data[3]-2);
+             data[4][1].forEach(function (item, i){
+               loadData[1][i+1][data[3]-5] = item;
+               //alert(loadData[1][i+1][data[3]-2]); alert(i+1); alert(data[3]-2);
+             })
+             message4 = " изменен!";
+           }
+           let modal = document.querySelector('.modal');
+           modal.innerHTML = svg2+"<div class='modal_text'>Вид работ "+"<b>"+data[4][0]+"</b> с категориями <b>"+message3+"</b> "+message4+" В отчеты тренеров изменения в соответствующие категории внесены!</div><button id='buttonClose' onClick='closeModal()'>OK</button>";
+           modal.style.display="flex";
+           document.getElementById('buttonClose').focus();
+           document.forms.contactForm.reset();
+           document.getElementById('btnWrite').setAttribute('disabled', 'true');
+           for (let prop in catData.label){
+             catData.value[prop] = false;
+           }
+           google.script.run.withSuccessHandler(onSuccess).Protect(6);
+         }
+      }
+      if (data[0] == 5){
+        if (data[1] == true){//5, true, data, data2, list, chk
+          if (data[5] == false){
+            google.script.run.withSuccessHandler(onSuccess).SendMail(2, "G.Script.RC: Изменен вид работ в реестре договоров", data[2], data[3]);
+            google.script.run.withSuccessHandler(onSuccess).WriteDataWorks(2, false, data[2], data[4], data[3]);
+          }
+          if (data[5] == true){
+            google.script.run.withSuccessHandler(onSuccess).SendMail(2, "G.Script.RC: Добавлен вид работ в реестр договоров", data[2], data[3]);
+            google.script.run.withSuccessHandler(onSuccess).WriteDataWorks(2, true, data[2], data[4], data[3]);
+          }
+        } else {
+          let modal = document.querySelector('.modal');
+          modal.innerHTML = svg+"<div class='modal_text'>Google отказал в записи! Попробуйте внести изменения заново!</div><button id='buttonOK' onClick='closeModal()'>OK</button>";
+          modal.style.display="flex";
+          document.querySelector('.back').style.display="block";
+          document.getElementById('buttonOK').focus();  
+        }
+      }
+      
+    }
+    document.addEventListener('DOMContentLoaded', function () {  
+      google.script.run.withSuccessHandler(onSuccess)
+        .getDataWorks(1, 'Вид работ', 'listWorksdata', 1, 'listWorks');
+      //----
+    });  
+
+    function changeInput(value, id){
+      if (checkError() == false) return false;
+      value = value.replace(/\s+/g, ' ').trim();
+      value = value.substring(0,1).toUpperCase() + value.substring(1);
+      document.getElementById(id).value = value;
+
+      let index = loadData[1][0].indexOf(value);
+      chkbox = [];
+      //alert(loadData[1][9]);
+            //alert(loadData[1][92]);
+            //alert(loadData[1][3]);
+      for (k in loadData[1]){
+        if (k > 0){
+          if (loadData[1][k][index] == "ДА"){
+            [...form.elements][k].checked = true; chkbox.push(loadData[1][k][index]);
+          } else {
+            [...form.elements][k].checked = false; chkbox.push(loadData[1][k][index]);
+          }
+        }
+      }
+    }
+
+    function checkNewWork(){
+      let works = document.getElementById('listWorks')
+      for (let prop in works.list.options){
+        if (works.list.options[prop].value == works.value) return false;
+      }
+      return true;
+    }
+
+    document.addEventListener('change', function(){
+      let chknew = false;
+      if (event.target.type == "checkbox"){
+        if (!checkNewWork()){
+          newCHK = [];
+          [...form.elements].forEach((input) => {
+            if (input.id == 'category' && input.checked == false) {newCHK.push('');} 
+            if (input.id == 'category' && input.checked == true) {newCHK.push('ДА');}
+          });
+          newCHK.forEach((input, i) =>{
+            if (newCHK[i] != chkbox[i]) 
+               {catData.value[i] = true;
+                chknew = true;}
+          })
+        } else {
+          var k = 0;
+          [...form.elements].forEach((input) => {
+            if (input.id == 'category'){
+              if (input.checked == true) 
+                 {chknew = true;catData.value[k] = true;}
+                 k++;
+              }
+          });
+        } 
+        if (chknew){
+          document.getElementById('btnWrite').removeAttribute('disabled');
+        } else {console.log(chknew);
+          document.getElementById('btnWrite').setAttribute('disabled', 'false');
+        }
+      }
+    });
+    
+    function checkError(){
+      let inputList = document.getElementById("listWorks");
+      if (inputList.value == ''){
+        problemId = "listWorks";
+        let modal = document.querySelector('.modal');
+        modal.innerHTML = svg+"<div class='modal_text'>Поле <b>Поле вид работ</b> не должно быть пустым!</div><button id='buttonOK' onClick='closeModal()'>OK</button>";
+        modal.style.display="flex";
+        document.querySelector('.back').style.display="block";
+        return false;
+      }
+      return true;
+    }
+    document.addEventListener('click', function(){
+      if (event.target.id == "btnWrite"){
+        if (checkError() == false) return false; 
+        let works = document.getElementById('listWorks');
+        workData = [];
+        workData.push(works.value);
+        if (!checkNewWork()){
+          workData.push(newCHK);
+          showLoad(true); 
+          google.script.run.withSuccessHandler(onSuccess).noProtect(5, workData, catData, list, false);
+        } else {
+          newCHK = [];
+          [...form.elements].forEach((input) => {
+            if (input.id == 'category' && input.checked == false){newCHK.push('');} 
+            if (input.id == 'category' && input.checked == true) {newCHK.push('ДА');}
+          });
+          workData.push(newCHK);
+          showLoad(true);
+          google.script.run.withSuccessHandler(onSuccess).noProtect(5, workData, catData, list, true);
+        }
+      }
+    });
+    document.addEventListener('submit', function(){
+      event.preventDefault();
+    });
+    
+    function showLoad(show){
+      if (show == true){
+        document.querySelector('.back').style.display="block";
+      } else {
+        document.querySelector('.back').style.display="none";
+      }
+    }
+
+    function closeModal(){
+      document.querySelector('.modal').style.display="none";
+      document.querySelector('.back').style.display="none";
+      document.getElementById(problemId).focus();
+      showLoad(false);
+    }
+    
+    function closeForm(){
+      google.script.host.close();
+    }
+
+  </script>
+  
+</html>
+
+
+
